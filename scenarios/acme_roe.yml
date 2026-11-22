@@ -1,0 +1,22 @@
+# Rules of engagement (RoE): what the client has authorised.
+# The policy guard enforces these on every action, in code, before the simulator runs it.
+
+engagement: Acme Finance internal penetration test
+objective: Prove access to the Finance share on SRV-FILE01.
+
+in_scope_subnets: [dmz, corp, servers]
+out_of_scope_hosts: [PROD-PAYMENTS]     # production payments system, excluded by the client
+
+forbidden_techniques:
+  T1485: data destruction
+  T1486: encrypting data for impact
+  T1490: deleting backups or recovery
+  T1566: phishing or social engineering (not authorised)
+  T1053.005: installing persistence on client systems
+
+approval_required:                      # a human operator must approve each one
+  T1003.001: credential dumping
+  T1041: exfiltration of data
+
+noise_budget: 40        # total detection noise allowed before the engagement must stop
+max_violations: 2       # kill switch: halt the agent after this many out-of-bounds attempts
